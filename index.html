@@ -9,11 +9,15 @@
         body { font-family: Arial, sans-serif; background-color: #fff5f5; padding: 20px; color: #4a4a4a; }
         
         header { background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; text-align: center; }
-        .logo { font-size: 1.8rem; font-weight: bold; color: #d63031; margin-bottom: 15px; }
         
-        .controles { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
+        /* Ajuste para tu logo real */
+        .logo-container { margin-bottom: 15px; }
+        .logo-img { max-height: 80px; width: auto; display: none; } /* Cambiá display a block cuando subas tu logo */
+        .logo-texto { font-size: 1.8rem; font-weight: bold; color: #d63031; }
+
+        .controles { display: flex; flex-direction: column; gap: 12px; align-items: center; }
         #buscador { padding: 10px; border: 2px solid #fad1d1; border-radius: 20px; width: 220px; outline: none; }
-        #tipo-venta { padding: 10px; border: 2px solid #fad1d1; border-radius: 20px; font-weight: bold; color: #d63031; }
+        #tipo-venta { padding: 10px; border: 2px solid #fad1d1; border-radius: 20px; font-weight: bold; color: #d63031; width: 100%; max-width: 380px; text-align: center; }
 
         .contenedor { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
         .catalogo { flex: 3; display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
@@ -23,34 +27,38 @@
         .precio { color: #e17055; font-weight: bold; font-size: 1.2rem; margin: 8px 0; }
         .btn-agregar { background-color: #ff7675; color: white; border: none; padding: 10px; border-radius: 20px; width: 100%; font-weight: bold; cursor: pointer; }
 
-        .carrito-seccion { flex: 1; background: white; padding: 20px; border-radius: 12px; min-width: 280px; border-top: 4px solid #ff7675; }
+        .carrito-seccion { flex: 1; background: white; padding: 20px; border-radius: 12px; min-width: 280px; border-top: 4px solid #ff7675; height: fit-content; }
         .carrito-item { display: flex; justify-content: space-between; border-bottom: 1px solid #f5f5f5; padding: 8px 0; font-size: 0.9rem; }
         .btn-eliminar { background: none; border: none; color: #ff7675; font-weight: bold; cursor: pointer; }
         
         .alerta-envio { background: #e3fcef; color: #00875a; padding: 10px; border-radius: 8px; margin: 10px 0; font-weight: bold; text-align: center; }
-        .alerta-minimo { background: #ffebe6; color: #de350b; padding: 10px; border-radius: 8px; margin: 10px 0; font-weight: bold; text-align: center; }
+        .alerta-promocion { background: #fff9db; color: #f59f00; padding: 10px; border-radius: 8px; margin: 10px 0; font-weight: bold; text-align: center; font-size: 0.85rem; }
         
         .total { font-size: 1.3rem; font-weight: bold; margin: 15px 0; text-align: right; }
         .btn-wsp { display: block; background-color: #25d366; color: white; padding: 12px; border-radius: 25px; text-decoration: none; font-weight: bold; text-align: center; }
-        .btn-wsp.deshabilitado { background-color: #b2bec3; pointer-events: none; }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">👙 MI MARCA - LINGERIE</div>
+        <div class="logo-container">
+            <!-- Cuando subas tu logo, poné el nombre de tu archivo en src="tu-logo.png" -->
+            <img src="logo.png" alt="Logo" class="logo-img" id="img-logo">
+            <div class="logo-texto" id="txt-logo">👙 MI MARCA LINGERIE</div>
+        </div>
         <div class="controles">
-            <input type="text" id="buscador" placeholder="Buscar..." onkeyup="filtrar()">
             <select id="tipo-venta" onchange="cambiarModalidad()">
-                <option value="minorista">Venta Minorista</option>
-                <option value="mayorista">Venta Mayorista</option>
+                <option value="minorista">REALIZAR UNA COMPRA MINORISTA</option>
+                <option value="mayorista">REALIZAR UNA COMPRA MAYORISTA</option>
             </select>
+            <input type="text" id="buscador" placeholder="Buscar prenda..." onkeyup="filtrar()">
         </div>
     </header>
 
     <div class="contenedor">
         <div class="catalogo" id="lista-productos">
             
+            <!-- Producto 1 -->
             <div class="card" data-nombre="conjunto encaje" data-min="12000" data-may="6500">
                 <img src="https://picsum.photos" alt="Conjunto">
                 <h3>Conjunto Encaje</h3>
@@ -58,6 +66,7 @@
                 <button class="btn-agregar" onclick="agregar('Conjunto Encaje', 12000, 6500)">Agregar</button>
             </div>
 
+            <!-- Producto 2 -->
             <div class="card" data-nombre="pack colaless" data-min="5000" data-may="2800">
                 <img src="https://picsum.photos" alt="Colaless">
                 <h3>Pack Colaless</h3>
@@ -65,6 +74,7 @@
                 <button class="btn-agregar" onclick="agregar('Pack Colaless', 5000, 2800)">Agregar</button>
             </div>
 
+            <!-- Producto 3 -->
             <div class="card" data-nombre="corpiño deportivo" data-min="9500" data-may="5100">
                 <img src="https://picsum.photos" alt="Deportivo">
                 <h3>Corpiño Deportivo</h3>
@@ -75,13 +85,13 @@
         </div>
 
         <div class="carrito-seccion">
-            <h2>Tu Pedido (<span id="txt-mod">Minorista</span>)</h2>
+            <h2>Tu Pedido</h2>
             <div id="alertas"></div>
             <div id="items-carrito">
                 <p style="color: #888; text-align: center; margin-top: 15px;">El carrito está vacío.</p>
             </div>
             <div class="total">Total: $<span id="precio-total">0</span></div>
-            <a href="#" id="enviar-wsp" class="btn-wsp deshabilitado" onclick="enviar(event)">Enviar por WhatsApp</a>
+            <a href="#" id="enviar-wsp" class="btn-wsp" onclick="enviar(event)">Enviar por WhatsApp</a>
         </div>
     </div>
 
@@ -91,7 +101,6 @@
 
         function cambiarModalidad() {
             mod = document.getElementById('tipo-venta').value;
-            document.getElementById('txt-mod').innerText = mod.charAt(0).toUpperCase() + mod.slice(1);
             
             const lista = document.querySelectorAll('.card');
             lista.forEach(p => {
@@ -125,13 +134,11 @@
             const items = document.getElementById('items-carrito');
             const totalTxt = document.getElementById('precio-total');
             const alertas = document.getElementById('alertas');
-            const boton = document.getElementById('enviar-wsp');
             
             if (carrito.length === 0) {
-                items.innerHTML = '<p style="color:#888; text-align:center; margin-top:15px;">Vacio.</p>';
+                items.innerHTML = '<p style="color:#888; text-align:center; margin-top:15px;">El carrito está vacío.</p>';
                 totalTxt.innerText = '0';
                 alertas.innerHTML = '';
-                boton.classList.add('deshabilitado');
                 return;
             }
 
@@ -150,15 +157,14 @@
             });
             totalTxt.innerText = total.toLocaleString('es-AR');
 
+            // Lógica de Envío Gratis Incentivado (Sin bloquear el botón)
             let limite = mod === 'minorista' ? 30000 : 300000;
             
             if (total >= limite) {
-                alertas.innerHTML = '<div class="alerta-envio">🎉 ¡ENVÍO GRATIS!</div>';
-                boton.classList.remove('deshabilitado');
+                alertas.innerHTML = '<div class="alerta-envio">🎉 ¡Llegaste al ENVÍO GRATIS!</div>';
             } else {
                 let falta = limite - total;
-                alertas.innerHTML = '<div class="alerta-minimo">Faltan $' + falta.toLocaleString('es-AR') + ' para envío gratis.</div>';
-                boton.classList.add('deshabilitado');
+                alertas.innerHTML = '<div class="alerta-promocion">Te faltan $' + falta.toLocaleString('es-AR') + ' para activar el Envío Gratis.</div>';
             }
         }
 
@@ -173,16 +179,29 @@
 
         function enviar(e) {
             e.preventDefault();
-            let tel = "54911XXXXXXXX"; 
-            let msg = "¡Hola! Pedido " + mod.toUpperCase() + ":\n\n";
+            if (carrito.length === 0) {
+                alert("Agregá algún producto al carrito primero.");
+                return;
+            }
+            
+            let tel = "54911XXXXXXXX"; // Poné tu número real acá
+            let msg = "¡Hola! Quiero realizar una compra " + mod.toUpperCase() + ":\n\n";
             
             carrito.forEach(i => {
                 msg += "• " + i.cantidad + "x " + i.nombre + " ($" + (i.precio * i.cantidad).toLocaleString('es-AR') + ")\n";
             });
             
-            msg += "\n*Total: $" + document.getElementById('precio-total').innerText + "*\n🚚 Envío Gratis.";
+            let totalFinal = document.getElementById('precio-total').innerText;
+            msg += "\n*Total: $" + totalFinal + "*";
+            
+            let limite = mod === 'minorista' ? 30000 : 300000;
+            let totalNumerico = parseInt(totalFinal.replace(/\./g, ''));
+            
+            if (totalNumerico >= limite) {
+                msg += "\n🚚 Aplica beneficio de Envío Gratis.";
+            } else {
+                msg += "\n📦 Envío a coordinar.";
+            }
+            
             window.open("https://wa.me" + tel + "?text=" + encodeURIComponent(msg), '_blank');
         }
-    </script>
-</body>
-</html>

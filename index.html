@@ -3,40 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Catálogo Digital</title>
+    <title>Mi Catálogo Digital con Carrito</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f4f4; text-align: center; padding: 20px; }
-        .grid { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 20px; }
-        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); width: 250px; }
-        .card img { max-width: 100%; height: auto; border-radius: 4px; }
-        .precio { color: #2ecc71; font-weight: bold; font-size: 1.2em; }
-        .btn-wsp { display: inline-block; background-color: #25d366; color: white; padding: 10px 15px; border-radius: 5px; text-decoration: none; font-weight: bold; margin-top: 10px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Arial, sans-serif; background-color: #f8f9fa; padding: 20px; color: #333; }
+        
+        /* Encabezado y Logo */
+        header { display: flex; flex-direction: column; align-items: center; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        .logo { max-width: 150px; height: auto; margin-bottom: 15px; font-weight: bold; font-size: 1.5rem; color: #2c3e50; }
+        
+        /* Buscador */
+        #buscador { width: 100%; max-width: 400px; padding: 12px; border: 2px solid #ddd; border-radius: 25px; font-size: 1rem; outline: none; transition: 0.3s; }
+        #buscador:focus { border-color: #3498db; }
+
+        /* Contenedor Principal */
+        .contenedor { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+        
+        /* Catálogo de Productos */
+        .catalogo { flex: 3; display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; min-width: 300px; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); width: 220px; text-align: center; }
+        .card img { max-width: 100%; height: auto; border-radius: 4px; margin-bottom: 10px; }
+        .precio { color: #2ecc71; font-weight: bold; font-size: 1.1em; margin: 8px 0; }
+        .btn-agregar { background-color: #3498db; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%; }
+        .btn-agregar:hover { background-color: #2980b9; }
+
+        /* Carrito de Compras lateral */
+        .carrito-seccion { flex: 1; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); min-width: 280px; max-height: 500px; overflow-y: auto; }
+        .carrito-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+        .btn-eliminar { background: none; border: none; color: #e74c3c; cursor: pointer; font-weight: bold; }
+        .total { font-size: 1.2rem; font-weight: bold; margin-top: 15px; text-align: right; }
+        .btn-wsp { display: block; background-color: #25d366; color: white; padding: 12px; border-radius: 5px; text-decoration: none; font-weight: bold; text-align: center; margin-top: 15px; }
     </style>
 </head>
 <body>
 
-    <h1>Bienvenido a Mi Tienda</h1>
-    <p>Mirá nuestros productos destacados y hacé tu pedido por WhatsApp.</p>
+    <header>
+        <!-- Marcador para tu logo: Podés cambiar el texto por una etiqueta <img> más adelante -->
+        <div class="logo" id="mi-logo">🛍️ [TU LOGO ACÁ]</div>
+        <input type="text" id="buscador" placeholder="Buscar productos..." onkeyup="filtrarProductos()">
+    </header>
 
-    <div class="grid">
-        <!-- Producto 1 -->
-        <div class="card">
-            <img src="https://picsum.photos" alt="Producto 1">
-            <h3>Producto Ejemplo 1</h3>
-            <p>Descripción breve del artículo y sus características principales.</p>
-            <p class="precio">$15.000</p>
-            <a href="https://wa.me" target="_blank" class="btn-wsp">Pedir por WhatsApp</a>
+    <div class="contenedor">
+        <!-- Listado de Productos -->
+        <div class="catalogo" id="lista-productos">
+            <!-- Producto 1 -->
+            <div class="card" data-nombre="remera algodon blanca">
+                <img src="https://picsum.photos" alt="Remera">
+                <h3>Remera de Algodón</h3>
+                <p class="precio">$15000</p>
+                <button class="btn-agregar" onclick="agregarAlCarrito('Remera de Algodón', 15000)">Agregar</button>
+            </div>
+
+            <!-- Producto 2 -->
+            <div class="card" data-nombre="pantalon jean azul">
+                <img src="https://picsum.photos" alt="Jean">
+                <h3>Jean Azul Clásico</h3>
+                <p class="precio">$28500</p>
+                <button class="btn-agregar" onclick="agregarAlCarrito('Jean Azul Clásico', 28500)">Agregar</button>
+            </div>
+
+            <!-- Producto 3 -->
+            <div class="card" data-nombre="zapatillas urbanas negras">
+                <img src="https://picsum.photos" alt="Zapatillas">
+                <h3>Zapatillas Urbanas</h3>
+                <p class="precio">$45000</p>
+                <button class="btn-agregar" onclick="agregarAlCarrito('Zapatillas Urbanas', 45000)">Agregar</button>
+            </div>
         </div>
 
-        <!-- Producto 2 -->
-        <div class="card">
-            <img src="https://picsum.photos?random=1" alt="Producto 2">
-            <h3>Producto Ejemplo 2</h3>
-            <p>Descripción breve del artículo y sus características principales.</p>
-            <p class="precio">$22.500</p>
-            <a href="https://wa.me" target="_blank" class="btn-wsp">Pedir por WhatsApp</a>
+        <!-- El Carrito Virtual -->
+        <div class="carrito-seccion">
+            <h2>Tu Pedido</h2>
+            <div id="items-carrito">
+                <p style="color: #888; font-style: italic;">El carrito está vacío.</p>
+            </div>
+            <div class="total">Total: $<span id="precio-total">0</span></div>
+            <a href="#" id="enviar-wsp" class="btn-wsp" onclick="enviarPedido(event)">Enviar pedido por WhatsApp</a>
         </div>
     </div>
 
+    <script>
+        // Memoria del carrito
+        let carrito = [];
+
+        // Función para agregar productos
+        function agregarAlCarrito(nombre, precio) {
+            // Verificar si ya existe en el carrito para sumar cantidad
+            const itemExistente = carrito.find(item => item.nombre === nombre);
+            if (itemExistente) {
+                itemExistente.cantidad++;
+            } else {
+                carrito.push({ nombre, precio, cantidad: 1 });
+            }
+            actualizarInterfazCarrito();
+        }
+
+        // Función para eliminar un producto del carrito
+        function eliminarDelCarrito(nombre) {
+            carrito = carrito.filter(item => item.nombre !== nombre);
+            actualizarInterfazCarrito();
+        }
+
+        // Dibuja el carrito en pantalla y calcula el total
+        function actualizarInterfazCarrito() {
+            const contenedorItems = document.getElementById('items-carrito');
+            const contenedorTotal = document.getElementById('precio-total');
+            
+            if (carrito.length === 0) {
+                contenedorItems.innerHTML = '<p style="color: #888; font-style: italic;">El carrito está vacío.</p>';
+                contenedorTotal.innerText = '0';
+                return;
+            }
+
+            contenedorItems.innerHTML = '';
+            let total = 0;
+
+            carrito.forEach(item => {
+                total += item.precio * item.cantidad;
+                contenedorItems.innerHTML += `
+                    <div class="carrito-item">
+                        <div>
+                            <strong>${item.nombre}</strong><br>
+                            <small>${item.cantidad}x $${item.precio}</small>
+                        </div>
+                        <button class="btn-eliminar" onclick="eliminarDelCarrito('${item.nombre}')">❌</button>
+                    </div>
+                `;
+            });
+
+            contenedorTotal.innerText = total.toLocaleString('es-AR');
+        }
+
+        // Buscador inteligente en tiempo real
+        function filtrarProductos() {
+            const textoBuscado = document.getElementById('buscador').value.toLowerCase();
+            const productos = document.querySelectorAll('.card');
+
+            productos.forEach(producto => {
+                const nombreProducto = producto.getAttribute('data-nombre');
+                if (nombreProducto.includes(textoBuscado)) {
+                    producto.style.display = "block"; // Lo muestra
+                } else {
+                    producto.style.display = "none";  // Lo oculta
+                }
+            });
+        }
+
+        // Envía el resumen de compra detallado a tu WhatsApp
+        function enviarPedido(e) {
+            e.preventDefault();
+            if (carrito.length === 0) {
+                alert("¡Tu carrito está vacío!");
+                return;
+            }
+
+            let numeroTelefono = "54911XXXXXXXX"; // 👈 REEMPLAZÁ CON TU NÚMERO (Código de país + área + número sin el 15)
+            let texto = "¡Hola Liz! Quiero hacer el siguiente pedido:\n\n";
+            
+            carrito.forEach(item => {
+                texto += `• ${item.cantidad}x ${item.nombre} ($${item.precio * item.cantidad})\n`;
+            });
+            
+            const totalHTML = document.getElementById('precio-total').innerText;
+            texto += `\n*Total a pagar: $${totalHTML}*`;
+
+            // Codifica el texto para que viaje seguro en la URL
+            const urlWsp = `https://wa.me{numeroTelefono}?text=${encodeURIComponent(texto)}`;
+            window.open(urlWsp, '_blank');
+        }
+    </script>
 </body>
 </html>
